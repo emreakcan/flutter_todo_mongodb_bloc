@@ -7,6 +7,9 @@ To run this app you will need MongoDB setup on your local as remote api has not 
 ## UI : 
 BLoC pattern used for the UI, as it is suitable for most of the apps, makes testing easier and handling states is more managable. App synces local database with remote database so it will be usable offlice aswell.
 
+RxDart used to control the local database, mostly for BehaviorSubjects and controlling the streams. Could do without. 
+Mocktail package to create mocks easily. Can improve test coverage easily.
+very_good_analysis package for linting.
 
 # Handling users : 
 Every install gets a unique id, and that id will be saved with the todo so that multiple users can use the app and can't see other's todo's. It is clear on the video how it is architectured. App supports multiple users without login. 
