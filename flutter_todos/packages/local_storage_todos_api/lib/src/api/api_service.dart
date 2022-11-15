@@ -14,7 +14,17 @@ class ApiService {
       // then parse the JSON.
 
       return (json.decode(response.body) as List)
-          .map((data) => Todo.fromJson({'title': data['title']}))
+          .map(
+            (data) => Todo.fromJson(
+              {
+                'title': data['title'],
+                'description': data['description'],
+                'id': data['id'],
+                'is_completed': data['is_completed'],
+                'user_id': data['user_id'],
+              },
+            ),
+          )
           .toList();
     } else {
       // If the server did not return a 200 OK response,
@@ -24,10 +34,27 @@ class ApiService {
   }
 
   Future<String> addTodo(Todo todo, String userId) async {
-    //TODO use request params instead on text params
     final response = await http.get(
       Uri.parse(
-        '${apiUrl}add_todo/params?user_id=$userId&title=${todo.title}&description=${todo.description}&id=${todo.id}',
+        '${apiUrl}add_todo/params?user_id=$userId&title=${todo.title}&description=${todo.description}&id=${todo.id}&is_completed=${todo.isCompleted}',
+      ),
+    );
+
+    if (response.statusCode == 200) {
+      // If the server did return a 200 OK response,
+      // then parse the JSON.
+      return jsonEncode(response.body);
+    } else {
+      // If the server did not return a 200 OK response,
+      // then throw an exception.
+      throw Exception('Failed to load todos');
+    }
+  }
+
+  Future<String> editTodo(Todo todo, String userId) async {
+    final response = await http.get(
+      Uri.parse(
+        '${apiUrl}edit_todo/params?user_id=$userId&title=${todo.title}&description=${todo.description}&id=${todo.id}&is_completed=${todo.isCompleted}',
       ),
     );
 
@@ -43,7 +70,6 @@ class ApiService {
   }
 
   Future<String> removeTodo(String id) async {
-    //TODO use request params instead on text params
     final response = await http.get(
       Uri.parse(
         '${apiUrl}remove_todo/params?todo_id=$id',

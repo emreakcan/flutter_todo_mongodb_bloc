@@ -15,19 +15,23 @@ class GetTodosController {
   Router get router {
     final router = Router();
 
-    // get request to "/test"
     router.get('/', (Request req) {
       return Response.ok("Get Todos Controller");
     });
 
-    // get request to "/test/<param>?query=????"
     router.get('/<param>', (Request req, String param) async {
       print(req.url.queryParameters["user_id"]); // accessing a url query
 
       List<Todo> todoList = [];
 
-      await db.collection("todos").find({"user_id": req.url.queryParameters["user_id"]}).forEach((article) {
-        todoList.add(Todo(title: article['title'], id: article['id'], description: article['description']?? ""));
+      await db
+          .collection("todos")
+          .find({"user_id": req.url.queryParameters["user_id"]}).forEach((todo) {
+        todoList.add(Todo(
+            title: todo['title'],
+            id: todo['id'],
+            isCompleted: todo['is_completed'],
+            description: todo['description'] ?? ""));
       });
 
       print(todoList);
@@ -35,7 +39,6 @@ class GetTodosController {
       return Response.ok(jsonEncode(todoList));
     });
 
-    // catch all for "/test"
     router.all('/<ignored|.*>', (Request request) => Response.notFound('null'));
 
     return router;

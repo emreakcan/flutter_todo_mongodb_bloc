@@ -2,22 +2,22 @@ import 'package:mongo_dart/mongo_dart.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf/shelf.dart';
 
-class AddTodoController {
+class EditTodoController {
   Db db;
 
-  AddTodoController(this.db);
+  EditTodoController(this.db);
 
   // By exposing a [Router] for an object, it can be mounted in other routers.
   Router get router {
     final router = Router();
 
     router.get('/', (Request req) {
-      return Response.ok("Add Todos Controller");
+      return Response.ok("Edit Todos Controller");
     });
 
     router.get('/<param>', (Request req, String param) {
 
-      db.collection("todos").insert({
+      db.collection("todos").replaceOne({"id": req.url.queryParameters["id"]},{
         'id': req.url.queryParameters["id"], //not really unique, although its not important
         'title': req.url.queryParameters["title"],
         'description': req.url.queryParameters["description"],

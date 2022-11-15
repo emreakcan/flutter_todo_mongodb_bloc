@@ -31,14 +31,22 @@ class LocalStorageTodosApi extends TodosApi {
   @visibleForTesting
   static const kTodosCollectionKey = '__todos_collection_key__';
 
+  static const kTodosUniqueUserKey = '__todos_unique_user_key__';
+
   String? _getValue(String key) => _plugin.getString(key);
   Future<void> _setValue(String key, String value) =>
       _plugin.setString(key, value);
 
   Future<void> _init() async {
 
-    //TODO use unique user id.
-    final todos = await _apiRepository.fetchTodos("user_id1");
+    var uniqueUserId = _getValue(kTodosUniqueUserKey);
+
+    if(uniqueUserId == null) {
+      await _setValue(kTodosUniqueUserKey, DateTime.now().microsecondsSinceEpoch.toString());
+      uniqueUserId = _getValue(kTodosUniqueUserKey);
+    }
+
+    final todos = await _apiRepository.fetchTodos(uniqueUserId!);
     todos.forEach(saveTodoLocally);
     final todosJson = _getValue(kTodosCollectionKey);
     if (todosJson != null) {
@@ -58,7 +66,11 @@ class LocalStorageTodosApi extends TodosApi {
 
   @override
   Future<void> saveTodo(Todo todo) async {
-    await _apiRepository.addTodo(todo, "user_id1");
+    if (isTodoExists(todo)) {
+      await _apiRepository.editTodo(todo, _getValue(kTodosUniqueUserKey)!);
+    } else {
+      await _apiRepository.addTodo(todo, _getValue(kTodosUniqueUserKey)!);
+    }
     await saveTodoLocally(todo);
   }
 
@@ -75,11 +87,15 @@ class LocalStorageTodosApi extends TodosApi {
     return _setValue(kTodosCollectionKey, json.encode(todos));
   }
 
+  bool isTodoExists(Todo todo) {
+    final todos = [..._todoStreamController.value];
+    final todoIndex = todos.indexWhere((t) => t.id == todo.id);
+    return todoIndex >= 0;
+  }
+
   @override
   Future<void> deleteTodo(String id) async {
-
     await _apiRepository.removeTodo(id);
-
     final todos = [..._todoStreamController.value];
     final todoIndex = todos.indexWhere((t) => t.id == id);
     if (todoIndex == -1) {
