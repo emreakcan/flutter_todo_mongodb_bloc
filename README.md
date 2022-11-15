@@ -1,4 +1,4 @@
-# Fluttur TODO app using MongoDB + Dart as backend.
+# Flutter TODO app using MongoDB + Dart as backend.
 
 
 ## How to run?
