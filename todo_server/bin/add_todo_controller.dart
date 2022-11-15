@@ -2,10 +2,10 @@ import 'package:mongo_dart/mongo_dart.dart';
 import 'package:shelf_router/shelf_router.dart';
 import 'package:shelf/shelf.dart';
 
-class AddTodosController {
+class AddTodoController {
   Db db;
 
-  AddTodosController(this.db);
+  AddTodoController(this.db);
 
   // By exposing a [Router] for an object, it can be mounted in other routers.
   Router get router {
@@ -22,8 +22,9 @@ class AddTodosController {
       print(req.url.queryParameters["user_id"]); // accessing a url query
 
       db.collection("todos").insert({
-        'id': DateTime.now().microsecondsSinceEpoch.toString(), //not really unique, although its not important
+        'id': req.url.queryParameters["id"], //not really unique, although its not important
         'title': req.url.queryParameters["title"],
+        'description': req.url.queryParameters["description"],
         'user_id': req.url.queryParameters["user_id"],
       });
 

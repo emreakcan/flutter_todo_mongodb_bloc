@@ -39,7 +39,7 @@ class LocalStorageTodosApi extends TodosApi {
 
     //TODO use unique user id.
     final todos = await _apiRepository.fetchTodos("user_id1");
-    todos.forEach(saveTodo);
+    todos.forEach(saveTodoLocally);
     final todosJson = _getValue(kTodosCollectionKey);
     if (todosJson != null) {
       final todos = List<Map<dynamic, dynamic>>.from(
@@ -57,7 +57,12 @@ class LocalStorageTodosApi extends TodosApi {
   Stream<List<Todo>> getTodos() => _todoStreamController.asBroadcastStream();
 
   @override
-  Future<void> saveTodo(Todo todo) {
+  Future<void> saveTodo(Todo todo) async {
+    await _apiRepository.addTodo(todo, "user_id1");
+    await saveTodoLocally(todo);
+  }
+
+  Future<void> saveTodoLocally(Todo todo) {
     final todos = [..._todoStreamController.value];
     final todoIndex = todos.indexWhere((t) => t.id == todo.id);
     if (todoIndex >= 0) {
@@ -72,6 +77,9 @@ class LocalStorageTodosApi extends TodosApi {
 
   @override
   Future<void> deleteTodo(String id) async {
+
+    await _apiRepository.removeTodo(id);
+
     final todos = [..._todoStreamController.value];
     final todoIndex = todos.indexWhere((t) => t.id == id);
     if (todoIndex == -1) {
