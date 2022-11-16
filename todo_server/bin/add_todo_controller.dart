@@ -7,18 +7,13 @@ class AddTodoController {
 
   AddTodoController(this.db);
 
-  // By exposing a [Router] for an object, it can be mounted in other routers.
   Router get router {
     final router = Router();
-
-    router.put('/', (Request req) {
-      return Response.ok("Add Todos Controller");
-    });
 
     router.put('/<param>', (Request req, String param) {
 
       db.collection("todos").insert({
-        'id': req.url.queryParameters["id"], //not really unique, although its not important
+        'id': req.url.queryParameters["id"],
         'title': req.url.queryParameters["title"],
         'description': req.url.queryParameters["description"],
         'user_id': req.url.queryParameters["user_id"],

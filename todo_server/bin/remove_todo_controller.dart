@@ -10,12 +10,8 @@ class RemoveTodoController {
   Router get router {
     final router = Router();
 
-    router.get('/', (Request req) {
-      return Response.ok("Remove Todos Controller");
-    });
-
-    router.get('/<param>', (Request req, String param) async {
-      print(req.url.queryParameters["todo_id"]); // accessing a url query
+    router.delete('/<param>', (Request req, String param) async {
+      print(req.url.queryParameters["todo_id"]);
 
       await db.collection("todos").remove({"id": req.url.queryParameters["todo_id"]});
 

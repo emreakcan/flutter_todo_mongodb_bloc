@@ -23,9 +23,9 @@ class ApiService {
             ),
           )
           .toList();
-    } else {
-      throw Exception('Failed to load todos');
     }
+
+    throw Exception('Failed to load todos');
   }
 
   Future<String> addTodo(Todo todo, String userId) async {
@@ -37,9 +37,9 @@ class ApiService {
 
     if (response.statusCode == 200) {
       return response.body;
-    } else {
-      throw Exception('Failed to load todos');
     }
+
+    throw Exception('Failed to add todo');
   }
 
   Future<String> editTodo(Todo todo, String userId) async {
@@ -51,9 +51,9 @@ class ApiService {
 
     if (response.statusCode == 200) {
       return response.body;
-    } else {
-      throw Exception('Failed to load todos');
     }
+
+    throw Exception('Failed to edit todo');
   }
 
   Future<bool> removeTodo(String id) async {

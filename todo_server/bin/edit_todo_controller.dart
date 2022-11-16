@@ -7,18 +7,13 @@ class EditTodoController {
 
   EditTodoController(this.db);
 
-  // By exposing a [Router] for an object, it can be mounted in other routers.
   Router get router {
     final router = Router();
-
-    router.patch('/', (Request req) {
-      return Response.ok("Edit Todos Controller");
-    });
 
     router.patch('/<param>', (Request req, String param) {
 
       db.collection("todos").replaceOne({"id": req.url.queryParameters["id"]},{
-        'id': req.url.queryParameters["id"], //not really unique, although its not important
+        'id': req.url.queryParameters["id"],
         'title': req.url.queryParameters["title"],
         'description': req.url.queryParameters["description"],
         'user_id': req.url.queryParameters["user_id"],

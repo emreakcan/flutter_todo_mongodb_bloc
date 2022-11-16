@@ -15,10 +15,6 @@ class GetTodosController {
   Router get router {
     final router = Router();
 
-    router.get('/', (Request req) {
-      return Response.ok("Get Todos Controller");
-    });
-
     router.get('/<param>', (Request req, String param) async {
       print(req.url.queryParameters["user_id"]); // accessing a url query
 
