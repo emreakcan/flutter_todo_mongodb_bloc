@@ -11,11 +11,11 @@ class AddTodoController {
   Router get router {
     final router = Router();
 
-    router.get('/', (Request req) {
+    router.put('/', (Request req) {
       return Response.ok("Add Todos Controller");
     });
 
-    router.get('/<param>', (Request req, String param) {
+    router.put('/<param>', (Request req, String param) {
 
       db.collection("todos").insert({
         'id': req.url.queryParameters["id"], //not really unique, although its not important

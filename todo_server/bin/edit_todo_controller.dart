@@ -11,11 +11,11 @@ class EditTodoController {
   Router get router {
     final router = Router();
 
-    router.get('/', (Request req) {
+    router.patch('/', (Request req) {
       return Response.ok("Edit Todos Controller");
     });
 
-    router.get('/<param>', (Request req, String param) {
+    router.patch('/<param>', (Request req, String param) {
 
       db.collection("todos").replaceOne({"id": req.url.queryParameters["id"]},{
         'id': req.url.queryParameters["id"], //not really unique, although its not important
