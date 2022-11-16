@@ -2,7 +2,7 @@
 
 
 ## How to run?
-To run this app you will need MongoDB setup on your local as remote api has not been deployed to any server, works only locally, pointing to local mongo setup.
+To run this app you will need MongoDB setup on your local as remote api has not been deployed to any server, works only locally, pointing to local mongo setup. Mostly tested on web until this point. iOS and Android tests are planned.
 
 ## UI : 
 BLoC pattern used for the UI, as it is suitable for most of the apps, makes testing easier and handling states is more managable. App synces local database with remote database so it will be usable offlice aswell.
