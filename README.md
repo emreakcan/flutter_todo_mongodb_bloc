@@ -14,6 +14,9 @@ Make sure you have the right collections on mongo db
 
 then run the app (flutter_todos), it should work
 
+You also need to follow these steps 
+https://stackoverflow.com/questions/65630743/how-to-solve-flutter-web-api-cors-error-only-with-dart-code
+
 ## UI : 
 BLoC pattern used for the UI, as it is suitable for most of the apps, makes testing easier and handling states is more managable. App synces local database with remote database so it will be usable offlice aswell.
 
